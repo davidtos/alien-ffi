@@ -4,7 +4,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-public class Assignment11_PointerArithmetic extends MainframeTerminal {
+public class Assignment13_PointerArithmetic extends MainframeTerminal {
 
     static final StructLayout ALIEN_SIGNATURE_LAYOUT = MemoryLayout.structLayout(
             ValueLayout.JAVA_INT.withName("id"),

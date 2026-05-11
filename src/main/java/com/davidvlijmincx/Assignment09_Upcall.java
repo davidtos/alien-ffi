@@ -4,7 +4,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 
-public class Assignment06_Upcall extends MainframeTerminal {
+public class Assignment09_Upcall extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
         Linker linker = Linker.nativeLinker();
@@ -15,7 +15,7 @@ public class Assignment06_Upcall extends MainframeTerminal {
 
             // 2. Create a MethodHandle pointing to our Java method
             MethodHandle javaAlarmHandle = MethodHandles.lookup().findStatic(
-                    Assignment06_Upcall.class,
+                    Assignment09_Upcall.class,
                     "onMotionDetected",
                     java.lang.invoke.MethodType.methodType(void.class, int.class, float.class)
             );

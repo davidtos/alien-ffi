@@ -3,7 +3,7 @@ package com.davidvlijmincx;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-public class Assignment08_Slicing extends MainframeTerminal {
+public class Assignment10_Slicing extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
         Linker linker = Linker.nativeLinker();

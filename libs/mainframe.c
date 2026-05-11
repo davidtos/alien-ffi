@@ -47,6 +47,14 @@ void get_current_stardate(double *segment_ptr) {
     *segment_ptr = stardate;
 }
 
+// Assignment 12:
+const char* get_threat_assessment(int threat_level) {
+    if (threat_level >= 9) return "PRIORITY OVERRIDE: CREW EXPENDABLE. RETURN SPECIMEN.";
+    if (threat_level >= 7) return "CRITICAL: Direct encounter imminent. Evacuate sector.";
+    if (threat_level >= 4) return "WARNING: Biomass detected. Maintain safe distance.";
+    return "CLEAR: No xenomorphic signatures detected.";
+}
+
 // Assignment 3:
 void authenticate_biometrics(const char* bio_sig) {
     char buffer[256];
@@ -107,6 +115,23 @@ void execute_deep_scan(int sector_id, BiomassSignature* output_scan) {
     output_scan->produces_acid = 1;
 
     printf("MU/TH/TR: Scan complete. Telemetry written to memory buffer.\n");
+}
+
+// Assignment 13:
+typedef struct {
+    char   classification;  // offset 0,  1 byte
+                            // offset 1-3: 3 bytes padding (inserted by C compiler)
+    int    sector_id;       // offset 4,  4 bytes
+    double signal_strength; // offset 8,  8 bytes
+    char   active;          // offset 16, 1 byte
+                            // offset 17-23: 7 bytes padding (inserted by C compiler)
+} SensorReading;            // sizeof = 24 bytes
+
+void scan_sector(int sector_id, SensorReading* output) {
+    output->classification = 'X';
+    output->sector_id = sector_id;
+    output->signal_strength = 98.6;
+    output->active = 1;
 }
 
 // Assignment 6:

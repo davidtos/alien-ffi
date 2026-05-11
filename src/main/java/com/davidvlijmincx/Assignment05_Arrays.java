@@ -3,7 +3,7 @@ package com.davidvlijmincx;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 
-public class Assignment04_Arrays extends MainframeTerminal {
+public class Assignment05_Arrays extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
 

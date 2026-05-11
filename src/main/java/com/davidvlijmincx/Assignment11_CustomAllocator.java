@@ -5,7 +5,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.ValueLayout;
 
-public class Assignment09_CustomAllocator extends MainframeTerminal {
+public class Assignment11_CustomAllocator extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
         try (Arena arena = Arena.ofConfined()) {
@@ -55,7 +55,7 @@ class SafeZoneAllocator implements SegmentAllocator {
         currentOffset += byteSize;
 
         // Optional: Console output for the story vibe
-        // System.out.println("MU-TH-UR: " + byteSize + " bytes allocated in Safe Zone at offset " + (currentOffset - byteSize));
+         System.out.println("MU-TH-UR: " + byteSize + " bytes allocated in Safe Zone at offset " + (currentOffset - byteSize));
 
         return allocatedSlice;
     }

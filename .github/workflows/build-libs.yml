@@ -1,0 +1,55 @@
+name: Build Native Libraries
+
+on:
+  push:
+    paths:
+      - 'libs/mainframe.c'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Zig
+        uses: mlugg/setup-zig@v1
+        with:
+          version: 0.14.0
+
+      - name: Create output directories
+        run: |
+          mkdir -p libs/mac-aarch64
+          mkdir -p libs/mac-x86_64
+          mkdir -p libs/linux-x86_64
+          mkdir -p libs/linux-aarch64
+          mkdir -p libs/windows-x86_64
+          mkdir -p libs/windows-aarch64
+
+      - name: Build mac-aarch64
+        run: zig cc -target aarch64-macos -shared -o libs/mac-aarch64/libmainframe.dylib libs/mainframe.c
+
+      - name: Build mac-x86_64
+        run: zig cc -target x86_64-macos -shared -o libs/mac-x86_64/libmainframe.dylib libs/mainframe.c
+
+      - name: Build linux-x86_64
+        run: zig cc -target x86_64-linux-gnu -shared -fPIC -o libs/linux-x86_64/libmainframe.so libs/mainframe.c
+
+      - name: Build linux-aarch64
+        run: zig cc -target aarch64-linux-gnu -shared -fPIC -o libs/linux-aarch64/libmainframe.so libs/mainframe.c
+
+      - name: Build windows-x86_64
+        run: zig cc -target x86_64-windows-gnu -shared -o libs/windows-x86_64/mainframe.dll libs/mainframe.c -lkernel32
+
+      - name: Build windows-aarch64
+        run: zig cc -target aarch64-windows-gnu -shared -o libs/windows-aarch64/mainframe.dll libs/mainframe.c -lkernel32
+
+      - name: Commit and push libraries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add libs/
+          git diff --staged --quiet || git commit -m "chore: rebuild native libs [skip ci]"
+          git push

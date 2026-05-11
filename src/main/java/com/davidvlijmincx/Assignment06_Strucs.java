@@ -4,7 +4,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-public class Assignment05_Strucs extends MainframeTerminal {
+public class Assignment06_Strucs extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
         // 1. Boot up the Mainframe link

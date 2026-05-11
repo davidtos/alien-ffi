@@ -4,7 +4,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
 
-public class Assignment10_Performance extends MainframeTerminal {
+public class Assignment12_Performance extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
 
