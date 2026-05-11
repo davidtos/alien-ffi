@@ -47,7 +47,7 @@ void get_current_stardate(double *segment_ptr) {
     *segment_ptr = stardate;
 }
 
-// Assignment 12:
+// Assignment 3:
 const char* get_threat_assessment(int threat_level) {
     if (threat_level >= 9) return "PRIORITY OVERRIDE: CREW EXPENDABLE. RETURN SPECIMEN.";
     if (threat_level >= 7) return "CRITICAL: Direct encounter imminent. Evacuate sector.";
@@ -55,7 +55,7 @@ const char* get_threat_assessment(int threat_level) {
     return "CLEAR: No xenomorphic signatures detected.";
 }
 
-// Assignment 3:
+// Assignment 4:
 void authenticate_biometrics(const char* bio_sig) {
     char buffer[256];
     print_with_prefix("Reading data stream... ");
@@ -69,7 +69,7 @@ const char* MSG_CLEAR = "Sector Clear";
 const char* MSG_BIOMASS = "WARNING! Non-terrestrial biomass detected!";
 const char* MSG_ERROR = "ERROR: Scan failed. No sectors detected in array.";
 
-// Assignment 4:
+// Assignment 5:
 void run_sector_scan(int* sector_ids, const char** out_reports, int count) {
     // 1. Error handling for 0 length
     if (count <= 0) {
@@ -94,7 +94,7 @@ void run_sector_scan(int* sector_ids, const char** out_reports, int count) {
     }
 }
 
-// Assignment 5:
+// Assignment 6:
 // The struct they need to map
 typedef struct {
     int entity_id;
@@ -117,7 +117,7 @@ void execute_deep_scan(int sector_id, BiomassSignature* output_scan) {
     printf("MU/TH/TR: Scan complete. Telemetry written to memory buffer.\n");
 }
 
-// Assignment 13:
+// Assignment 7:
 typedef struct {
     char   classification;  // offset 0,  1 byte
                             // offset 1-3: 3 bytes padding (inserted by C compiler)
@@ -134,7 +134,7 @@ void scan_sector(int sector_id, SensorReading* output) {
     output->active = 1;
 }
 
-// Assignment 6:
+// Assignment 8:
 
 // Define the shape of the callback function (The Upcall)
 // It will tell us WHICH sector, and HOW FAST the entity is moving.
@@ -159,7 +159,7 @@ void simulate_sensor_sweep() {
     }
 }
 
-// Assignment 7:
+// Assignment 9:
 int transmit_distress_beacon(int frequency_band) {
     setbuf(stdout, NULL);
     printf("MU/TH/TR: Powering up comms array on frequency %d...\n", frequency_band);
@@ -177,7 +177,7 @@ int transmit_distress_beacon(int frequency_band) {
     return -1;
 }
 
-// Assignment 8:
+// Assignment 10:
 
 #define DUMP_SIZE 10240       // 10KB memory dump
 #define DIRECTIVE_OFFSET 4096 // The secret is hidden here
@@ -211,7 +211,7 @@ void decrypt_dump(const char* memory_slice, int length) {
 }
 
 
-// Assignment 10:
+// Assignment 12:
 int analyze_sensor_sweep(int32_t* coordinates, int ping_count) {
     int max_threat = 0;
 
@@ -226,7 +226,7 @@ int analyze_sensor_sweep(int32_t* coordinates, int ping_count) {
     return max_threat;
 }
 
-// Assignment 11:
+// Assignment 13:
 
 typedef struct {
     int32_t id;
