@@ -57,7 +57,7 @@ public class Assignment08_Errors extends MainframeTerminal {
                     System.out.println("Reason: Hardline severed. The alien cut the power to the transmitter!");
                 }  else if (errCode == 966) {
                     System.out.println("Mainframe Error 966: SPECIAL ORDERS.");
-                    System.out.println("Do not abandon the Cronus — Bring back all Xenomorphic Materials — Priority One.");
+                    System.out.println("Do not abandon the ship. Bring back all Xenomorphic Materials — Priority One.");
                 } else {
                     System.out.println("Unknown Critical Failure: " + errCode);
                 }
