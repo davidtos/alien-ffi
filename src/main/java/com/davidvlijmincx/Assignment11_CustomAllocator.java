@@ -22,7 +22,7 @@ public class Assignment11_CustomAllocator extends MainframeTerminal {
             // 3. Use the custom allocator for all further operations
             // (e.g., allocating strings or structs to send to C)
             MemorySegment commandStr = safeAllocator.allocateFrom("SEAL DOORS");
-            MemorySegment overrideCode = safeAllocator.allocate(ValueLayout.JAVA_INT, 937);
+            MemorySegment overrideCode = safeAllocator.allocateFrom(ValueLayout.JAVA_INT, 937);
 
             System.out.println("\nMOTHER: Command issued — " + commandStr.getString(0) + ".");
             System.out.println("MOTHER: Override code " + overrideCode.get(ValueLayout.JAVA_INT, 0) + " is active.");
