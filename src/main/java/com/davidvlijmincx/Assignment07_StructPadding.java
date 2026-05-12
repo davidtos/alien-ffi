@@ -42,7 +42,12 @@ public class Assignment07_StructPadding extends MainframeTerminal {
         //
         // Hint: Use MemoryLayout.paddingLayout(N) to insert N bytes of padding between fields.
         // The trailing padding after 'active' ensures sensorLayout.byteSize() == C's sizeof == 24.
-        StructLayout sensorLayout = MemoryLayout.structLayout(ValueLayout.JAVA_BYTE.withName("classification"), MemoryLayout.paddingLayout(3), ValueLayout.JAVA_INT.withName("sector_id"), ValueLayout.JAVA_DOUBLE.withName("signal_strength"), ValueLayout.JAVA_BYTE.withName("active"), MemoryLayout.paddingLayout(7)).withName("SensorReading");
+        StructLayout sensorLayout = MemoryLayout.structLayout(ValueLayout.JAVA_BYTE.withName("classification"),
+                MemoryLayout.paddingLayout(3),
+                ValueLayout.JAVA_INT.withName("sector_id"),
+                ValueLayout.JAVA_DOUBLE.withName("signal_strength"),
+                ValueLayout.JAVA_BYTE.withName("active"),
+                MemoryLayout.paddingLayout(7)).withName("SensorReading");
 
         System.out.println("MOTHER: SensorReading layout size = " + sensorLayout.byteSize() + " bytes (expected 24)");
 
