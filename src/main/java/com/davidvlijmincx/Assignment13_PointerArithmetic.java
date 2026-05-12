@@ -83,6 +83,8 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
 
             freeSensorSweep.invokeExact(pointerArraySegment, pingCount);
 
+
+        System.out.println("\nMOTHER: Sensor sweep complete. Cross-referencing signatures with crew biometric registry...");
            MainframeTerminal.theEnd(pingCount);
     }
 }

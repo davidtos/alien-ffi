@@ -45,6 +45,7 @@ public class Assignment10_Slicing extends MainframeTerminal {
 
 
         } catch (Throwable t) {
+            System.err.println("MOTHER: Decryption failed. Classified directive remains sealed.");
             t.printStackTrace();
         }
     }

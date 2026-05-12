@@ -50,6 +50,8 @@ public class Assignment09_Upcall extends MainframeTerminal {
             // Tell C to run the simulation, which will fire the upcalls back to Java
             simulateSweep.invokeExact();
         }
+
+        System.out.println("MOTHER: Sensor sweep concluded. A core dump has been triggered.");
     }
 
 
