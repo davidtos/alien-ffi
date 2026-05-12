@@ -44,8 +44,10 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
             // 3. Call C: We get a zero-length memory segment representing the AlienSignature**
             pointerArraySegment = (MemorySegment) analyzeSensorSweep.invoke(pingCount);
 
+            System.out.println("MOTHER: Initiating full vessel sensor sweep. Processing " + pingCount + " sensor pings...\n");
+
             if (pointerArraySegment.equals(MemorySegment.NULL)) {
-                System.out.println("Sensor sweep failed.");
+                System.out.println("MOTHER: Sensor sweep failed. All systems may be compromised.");
                 return;
             }
 
@@ -79,7 +81,9 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
                         id, threat, direction, speed);
             }
 
+            freeSensorSweep.invokeExact(pointerArraySegment, pingCount);
 
+           MainframeTerminal.theEnd(pingCount);
     }
 }
 

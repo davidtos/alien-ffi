@@ -8,6 +8,9 @@ import java.lang.foreign.ValueLayout;
 public class Assignment11_CustomAllocator extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
+        System.out.println("MOTHER: Alien presence confirmed in multiple sectors. Initiating emergency containment.");
+        System.out.println("MOTHER: Establishing Safe Zone Alpha. Allocating emergency memory grid...\n");
+
         try (Arena arena = Arena.ofConfined()) {
 
             // 1. Allocate a 1MB Safe Zone using standard allocation
@@ -21,6 +24,9 @@ public class Assignment11_CustomAllocator extends MainframeTerminal {
             MemorySegment commandStr = safeAllocator.allocateFrom("SEAL DOORS");
             MemorySegment overrideCode = safeAllocator.allocate(ValueLayout.JAVA_INT, 937);
 
+            System.out.println("\nMOTHER: Command issued — " + commandStr.getString(0) + ".");
+            System.out.println("MOTHER: Override code " + overrideCode.get(ValueLayout.JAVA_INT, 0) + " is active.");
+            System.out.println("MOTHER: All internal bulkhead doors are sealed. Safe Zone is holding.");
         }
     }
 }

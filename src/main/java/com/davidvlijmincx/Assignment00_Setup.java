@@ -18,7 +18,9 @@ public class Assignment00_Setup {
             MemorySegment printfSymbol = linker.defaultLookup().findOrThrow("strlen");
             MethodHandle printf = linker.downcallHandle(printfSymbol, FunctionDescriptor.of(JAVA_INT, ADDRESS));
             int value =  (int) printf.invokeExact(arena.allocateFrom("Hello, Workshop!"));
-            System.out.println( value == 16? "Everything Works! You are good to go!" : "Something is not working");
+            System.out.println(value == 16
+                    ? "MOTHER: Uplink confirmed. All systems nominal. You are cleared to proceed, crew member."
+                    : "MOTHER: Uplink failure. Check system configuration before continuing.");
         }
     }
 }

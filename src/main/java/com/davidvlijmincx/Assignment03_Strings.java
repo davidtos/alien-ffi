@@ -45,5 +45,6 @@ public class Assignment03_Strings extends MainframeTerminal {
         String assessment = bounded.getString(0);
 
         System.out.println("MOTHER: " + assessment);
+        System.out.println("MOTHER: Recommend all crew be notified. This vessel may no longer be secure.");
     }
 }

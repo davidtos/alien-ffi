@@ -14,9 +14,14 @@ public class Assignment04_Critical extends MainframeTerminal {
 
             MethodHandle connectHandle = getLinker().downcallHandle(s, descriptor, Linker.Option.critical(true));
 
-            MemorySegment memorySegment = MemorySegment.ofArray(("David").getBytes());
+            System.out.println("MOTHER: Initiating biometric authentication. Please stand by...");
+
+            MemorySegment memorySegment = MemorySegment.ofArray(("Ash").getBytes());
 
             connectHandle.invoke(memorySegment);
+
+            System.out.println("MOTHER: Biometric confirmed. Crew member Ash logged to registry.");
+            System.out.println("MOTHER: All registered designations are on file.");
 
         }
 

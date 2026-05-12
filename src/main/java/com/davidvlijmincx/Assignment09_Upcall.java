@@ -44,6 +44,9 @@ public class Assignment09_Upcall extends MainframeTerminal {
             // Pass the Java function to C
             registerTracker.invokeExact(upcallStub);
 
+            System.out.println("MOTHER: Motion tracker online. Activating sensor sweep...");
+            System.out.println("MOTHER: Do not move.\n");
+
             // Tell C to run the simulation, which will fire the upcalls back to Java
             simulateSweep.invokeExact();
         }

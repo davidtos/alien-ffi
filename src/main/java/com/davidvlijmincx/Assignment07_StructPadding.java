@@ -88,6 +88,15 @@ public class Assignment07_StructPadding extends MainframeTerminal {
             System.out.println("Sector ID      : " + sectorId);
             System.out.println("Signal Strength: " + signalStrength);
             System.out.println("Active         : " + (active == 1 ? "YES" : "NO"));
+
+            System.out.println();
+            if (active == 0) {
+                System.out.println("MOTHER: Subject is currently dormant. Do not approach.");
+                System.out.println("MOTHER: Proximity may trigger a hostile response. Maintain safe distance.");
+            } else {
+                System.out.println("MOTHER: !! WARNING — SUBJECT IS ACTIVE !!");
+                System.out.println("MOTHER: Recommend immediate withdrawal from sector.");
+            }
         }
     }
 }

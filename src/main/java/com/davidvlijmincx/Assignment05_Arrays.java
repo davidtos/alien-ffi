@@ -21,8 +21,10 @@ public class Assignment05_Arrays extends MainframeTerminal {
             FunctionDescriptor descriptor = FunctionDescriptor.ofVoid(ValueLayout.ADDRESS,ValueLayout.ADDRESS, ValueLayout.JAVA_INT);
             MemorySegment getCurrentStardate = SymbolLookup.libraryLookup( getLibPath(), arena).findOrThrow("run_sector_scan");
             MethodHandle runDeepScanHandle = getLinker().downcallHandle(getCurrentStardate, descriptor);
+
+            System.out.println("MOTHER: Running scheduled sector sweep across " + numberOfSectors + " sectors. Stand by...");
             runDeepScanHandle.invokeExact(sectorIds, reportsPtr, numberOfSectors);
-            System.out.println("--- SECTOR SCAN RESULTS ---");
+            System.out.println("\n--- SECTOR SCAN RESULTS ---");
 
 
             for (int i = 0; i < numberOfSectors; i++) {
@@ -33,6 +35,8 @@ public class Assignment05_Arrays extends MainframeTerminal {
                 String report = stringAddress.getString(0);
                 System.out.println("Sector " + sectorNum + ": " + report);
             }
+
+            System.out.println("\nMOTHER: Sweep complete. Flagging anomalous readings for deep analysis.");
         }
 
     }

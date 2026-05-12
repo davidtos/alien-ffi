@@ -55,9 +55,14 @@ public class Assignment08_Errors extends MainframeTerminal {
                 } else if (errCode == 111) {
                     System.out.println("Mainframe Error 111: ECONNREFUSED.");
                     System.out.println("Reason: Hardline severed. The alien cut the power to the transmitter!");
+                }  else if (errCode == 966) {
+                    System.out.println("Mainframe Error 966: SPECIAL ORDERS.");
+                    System.out.println("Do not abandon the Cronus — Bring back all Xenomorphic Materials — Priority One.");
                 } else {
                     System.out.println("Unknown Critical Failure: " + errCode);
                 }
+
+                System.out.println("\nMOTHER: No distress signal transmitted. No rescue is coming. You are on your own.");
             } else {
                 System.out.println(">>> TRANSMISSION SUCCESSFUL. Hold your ground, Colonial Marines are en route. <<<");
             }

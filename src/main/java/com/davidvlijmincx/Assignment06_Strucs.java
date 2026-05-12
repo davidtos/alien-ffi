@@ -41,7 +41,7 @@ public class Assignment06_Strucs extends MainframeTerminal {
             // Allocate the blank struct in native memory based on our blueprint
             MemorySegment scanOutput = arena.allocate(biomassLayout);
 
-            System.out.println("Sending scan command to mainframe...");
+            System.out.println("MOTHER: Initiating deep biomass scan of Sector " + sectorId + ". Analysing biological signatures...");
 
             // Execute the downcall. We pass the memory address of our struct!
             executeDeepScan.invokeExact(sectorId, scanOutput);
@@ -61,6 +61,9 @@ public class Assignment06_Strucs extends MainframeTerminal {
 
             if (producesAcid == 1) {
                 System.out.println("!!! CRITICAL WARNING: BIOLOGICAL ACID DETECTED. DO NOT ENGAGE !!!");
+                System.out.println("MOTHER: Specimen is viable. Containment protocol is now active.");
+            } else {
+                System.out.println("MOTHER: No acid signature detected. Standard observation protocols apply.");
             }
         }
     }
