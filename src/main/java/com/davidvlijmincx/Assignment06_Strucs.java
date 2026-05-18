@@ -7,52 +7,58 @@ import java.lang.invoke.VarHandle;
 public class Assignment06_Strucs extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
-        // 1. Boot up the Mainframe link
         Linker linker = Linker.nativeLinker();
-        // 2. Define the Blueprint (GroupLayout)
-        // NOTE: We assign .withName() to both the individual layouts AND the whole group.
-        GroupLayout biomassLayout = MemoryLayout.structLayout(
-                ValueLayout.JAVA_INT.withName("entity_id"),
-                ValueLayout.JAVA_FLOAT.withName("threat_level"),
-                ValueLayout.JAVA_LONG.withName("mass_kg"),
-                ValueLayout.JAVA_INT.withName("produces_acid")
-        ).withName("BiomassSignature");
 
-        // 3. Calibrate the Extraction Lasers (VarHandles)
-        // Each VarHandle targets one named field in the struct layout.
-        // The path element must match the name given in withName() above.
-        VarHandle entityIdHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("entity_id"));
-        VarHandle threatLevelHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("threat_level"));
-        VarHandle massHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("mass_kg"));
-        VarHandle acidHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("produces_acid"));
+        // TODO 1: Define the struct layout — this is the Java mirror of the C struct.
+        // C struct:
+        //
+        //   typedef struct {
+        //    int entity_id;
+        //    float threat_level;
+        //    long mass_kg;
+        //    int produces_acid;
+        //} BiomassSignature;
 
-        // 4. Locate the C Function
+        //
+        // Hint: MemoryLayout.structLayout(...) takes ValueLayouts as arguments.
+        // Give each field a name using .withName("field_name") you'll need those names for VarHandles.
+        // Give the whole GroupLayout a name too: .withName("BiomassSignature")
+        GroupLayout biomassLayout = null;
+
+        // TODO 2: Create a VarHandle for each field so you can read values out of the struct later.
+        // A VarHandle is like a typed pointer to a specific field inside a MemorySegment.
+        // Hint: biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("field_name"))
+        VarHandle entityIdHandle = null;
+        VarHandle threatLevelHandle = null;
+        VarHandle massHandle = null;
+        VarHandle acidHandle = null;
+
+        // GIVEN
         MethodHandle executeDeepScan = linker.downcallHandle(
-                SymbolLookup.libraryLookup( getLibPath(), Arena.ofAuto()).findOrThrow("execute_deep_scan"),
+                SymbolLookup.libraryLookup(getLibPath(), Arena.ofAuto()).findOrThrow("execute_deep_scan"),
                 FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.ADDRESS)
         );
 
-        int sectorId = 4; // Carried over from their array assignment
+        int sectorId = 4;
 
-        // 5. Open the Memory Arena (Containment Field)
         try (Arena arena = Arena.ofConfined()) {
 
-            // Allocate the blank struct in native memory based on our blueprint
-            MemorySegment scanOutput = arena.allocate(biomassLayout);
+            // TODO 3: Allocate a native memory segment sized to hold one BiomassSignature struct.
+            // Hint: arena.allocate(layout) pass it the GroupLayout you defined above
+            MemorySegment scanOutput = null;
 
             System.out.println("MOTHER: Initiating deep biomass scan of Sector " + sectorId + ". Analysing biological signatures...");
 
-            // Execute the downcall. We pass the memory address of our struct!
             executeDeepScan.invokeExact(sectorId, scanOutput);
 
-            // 6. Extract the data using the VarHandles
-            // We pass the memory segment, and a byte offset of 0L (start at the beginning of the struct)
-            int entityId = (int) entityIdHandle.get(scanOutput, 0L);
-            float threatLevel = (float) threatLevelHandle.get(scanOutput, 0L);
-            long mass = (long) massHandle.get(scanOutput, 0L);
-            int producesAcid = (int) acidHandle.get(scanOutput, 0L);
+            // TODO 4: Read each field from the struct using your VarHandles.
+            // Hint: varHandle.get(segment, 0L) 0 is the byte offset from the start of the segment.
+            // Don't forget to cast the result to the right Java type.
+            int entityId = 0;
+            float threatLevel = 0;
+            long mass = 0;
+            int producesAcid = 0;
 
-            // 7. Survival Report
             System.out.println("\n=== DEEP SCAN TELEMETRY ===");
             System.out.println("Subject ID: " + entityId);
             System.out.println("Estimated Mass: " + mass + " kg");
