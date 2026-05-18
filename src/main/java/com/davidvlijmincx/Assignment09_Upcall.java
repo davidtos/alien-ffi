@@ -13,6 +13,9 @@ public class Assignment09_Upcall extends MainframeTerminal {
 
         try (Arena arena = Arena.ofConfined()) {
 
+            // 1. Look up the C functions we need (registered below at step 5)
+            //    We do this first so the arena that owns the symbol lookup stays open.
+
             // 2. Create a MethodHandle pointing to our Java method
             MethodHandle javaAlarmHandle = MethodHandles.lookup().findStatic(
                     Assignment09_Upcall.class,

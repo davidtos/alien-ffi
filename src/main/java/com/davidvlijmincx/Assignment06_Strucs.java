@@ -19,10 +19,9 @@ public class Assignment06_Strucs extends MainframeTerminal {
         ).withName("BiomassSignature");
 
         // 3. Calibrate the Extraction Lasers (VarHandles)
-        // -> GIVE THEM THIS ONE:
+        // Each VarHandle targets one named field in the struct layout.
+        // The path element must match the name given in withName() above.
         VarHandle entityIdHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("entity_id"));
-
-        // -> MAKE THEM WRITE THESE:
         VarHandle threatLevelHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("threat_level"));
         VarHandle massHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("mass_kg"));
         VarHandle acidHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("produces_acid"));

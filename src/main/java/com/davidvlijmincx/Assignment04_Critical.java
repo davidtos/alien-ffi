@@ -12,6 +12,10 @@ public class Assignment04_Critical extends MainframeTerminal {
 
             MemorySegment s = SymbolLookup.libraryLookup( getLibPath(), arena).findOrThrow("authenticate_biometrics");
 
+            // Linker.Option.critical(true) tells the JVM that this call is short and
+            // time-sensitive. The JVM skips inserting a GC safepoint for the duration,
+            // which avoids pinning the carrier thread and reduces latency.
+            // Only use for calls that are guaranteed to return quickly.
             MethodHandle connectHandle = getLinker().downcallHandle(s, descriptor, Linker.Option.critical(true));
 
             System.out.println("MOTHER: Initiating biometric authentication. Please stand by...");

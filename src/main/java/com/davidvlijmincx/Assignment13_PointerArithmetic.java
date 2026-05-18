@@ -65,15 +65,18 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
                 // Read the pointer (memory address) at the current index
                 MemorySegment structPointer = sizedPointerArray.getAtIndex(ValueLayout.ADDRESS, i);
 
-                // Reinterpret the chased pointer into a segment the size of our struct
-//                MemorySegment structSegment = structPointer.reinterpret(ALIEN_SIGNATURE_LAYOUT.byteSize());
-//                int id = (int) idHandle.get(structSegment, 0L);
-//                int threat = (int) threatHandle.get(structSegment, 0L);
-//                float direction = (float) dirHandle.get(structSegment, 0L);
-//                float speed = (float) speedHandle.get(structSegment, 0L);
+                // Standard approach: reinterpret the pointer into a bounded segment, then
+                // read fields with VarHandles. This creates a new MemorySegment object per iteration.
+                //   MemorySegment structSegment = structPointer.reinterpret(ALIEN_SIGNATURE_LAYOUT.byteSize());
+                //   int id = (int) idHandle.get(structSegment, 0L);
+                //   int threat = (int) threatHandle.get(structSegment, 0L);
+                //   float direction = (float) dirHandle.get(structSegment, 0L);
+                //   float speed = (float) speedHandle.get(structSegment, 0L);
 
+                // Zero-GC approach: pass the raw address to a VarHandle that operates on a
+                // single global MAX_VALUE-sized segment. No per-iteration object allocation.
                 int id = ZeroGcAlienSignature.getId(structPointer.address());
-                int threat = ZeroGcAlienSignature.GetThreat(structPointer.address());
+                int threat = ZeroGcAlienSignature.getThreat(structPointer.address());
                 float direction = ZeroGcAlienSignature.getDir(structPointer.address());
                 float speed = ZeroGcAlienSignature.getSpeed(structPointer.address());
 
@@ -90,6 +93,11 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
 }
 
 
+// Zero-GC reader for AlienSignature structs.
+// Instead of creating a new MemorySegment per struct (which allocates a heap object),
+// we maintain one MAX_VALUE-sized segment anchored at address 0. VarHandles accept a
+// (segment, byteOffset) pair, so we pass GLOBAL_MEMORY + the raw pointer address.
+// The JIT can eliminate the VarHandle dispatch entirely, leaving just a native memory load.
 class ZeroGcAlienSignature {
     public static final GroupLayout ALIEN_SIGNATURE_LAYOUT = MemoryLayout.structLayout(
             ValueLayout.JAVA_INT.withName("id"),
@@ -110,7 +118,7 @@ class ZeroGcAlienSignature {
         return (int) idHandle.get(GLOBAL_MEMORY, address);
     }
 
-    public static int GetThreat(long address) {
+    public static int getThreat(long address) {
         return (int) threatHandle.get(GLOBAL_MEMORY, address);
     }
     public static float getDir(long address) {

@@ -134,7 +134,7 @@ void scan_sector(int sector_id, SensorReading* output) {
     output->active = 1;
 }
 
-// Assignment 8:
+// Assignment 9:
 
 // Define the shape of the callback function (The Upcall)
 // It will tell us WHICH sector, and HOW FAST the entity is moving.
@@ -159,7 +159,7 @@ void simulate_sensor_sweep() {
     }
 }
 
-// Assignment 9:
+// Assignment 8:
 int transmit_distress_beacon(int frequency_band) {
     setbuf(stdout, NULL);
     printf("MU/TH/TR: Powering up comms array on frequency %d...\n", frequency_band);
