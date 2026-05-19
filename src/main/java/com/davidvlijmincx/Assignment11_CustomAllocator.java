@@ -33,6 +33,7 @@ public class Assignment11_CustomAllocator extends MainframeTerminal {
 
 class SafeZoneAllocator implements SegmentAllocator {
 
+    // GIVEN — backing segment and bump pointer
     private final MemorySegment safeZone;
     private long currentOffset = 0;
 
@@ -40,28 +41,28 @@ class SafeZoneAllocator implements SegmentAllocator {
         this.safeZone = safeZone;
     }
 
+    // The SegmentAllocator interface requires you to implement this one method.
+    // It is a bump-pointer allocator: track an offset into safeZone,
+    // advance it on every allocation, and hand back a slice.
     @Override
     public MemorySegment allocate(long byteSize, long byteAlignment) {
-        // 1. Calculate alignment padding. C structs often require
-        // memory addresses to be multiples of 4 or 8 bytes.
-        long remainder = currentOffset % byteAlignment;
-        long padding = (remainder == 0) ? 0 : (byteAlignment - remainder);
 
-        currentOffset += padding;
+        // TODO 1: Advance currentOffset to the next multiple of byteAlignment.
+        // Native types (int, double, structs) must start at an aligned address —
+        // if currentOffset isn't already aligned, insert padding bytes.
+        // Hint: remainder = currentOffset % byteAlignment
+        //       padding   = (remainder == 0) ? 0 : (byteAlignment - remainder)
 
-        // 2. Check if we have breached the safe zone capacity
-        if (currentOffset + byteSize > safeZone.byteSize()) {
-            throw new OutOfMemoryError("CRITICAL: Safe zone memory depleted. Acid breach imminent.");
-        }
+        // TODO 2: Check capacity, throw OutOfMemoryError if the allocation
+        // would exceed safeZone.byteSize().
 
-        // 3. Slice the requested memory from the safe zone
-        MemorySegment allocatedSlice = safeZone.asSlice(currentOffset, byteSize);
+        // TODO 3: Slice byteSize bytes from safeZone at currentOffset.
+        // Hint: safeZone.asSlice(currentOffset, byteSize) like you used asSlice in Assignment 10.
+        MemorySegment allocatedSlice = null;
 
-        // 4. Move the bump pointer forward
-        currentOffset += byteSize;
+        // TODO 4: Advance currentOffset by byteSize so the next allocation starts after this one.
 
-        // Optional: Console output for the story vibe
-         System.out.println("MU-TH-UR: " + byteSize + " bytes allocated in Safe Zone at offset " + (currentOffset - byteSize));
+        System.out.println("MU-TH-UR: " + byteSize + " bytes allocated in Safe Zone at offset " + (currentOffset - byteSize));
 
         return allocatedSlice;
     }
