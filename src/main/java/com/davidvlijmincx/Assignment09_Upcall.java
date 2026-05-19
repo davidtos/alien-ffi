@@ -7,48 +7,40 @@ import java.lang.invoke.MethodHandles;
 public class Assignment09_Upcall extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
+        // GIVEN
         Linker linker = Linker.nativeLinker();
-        String libPath = getLibPath();
-        SymbolLookup shipSystems = SymbolLookup.libraryLookup( libPath, Arena.ofAuto());
+        SymbolLookup shipSystems = SymbolLookup.libraryLookup(getLibPath(), Arena.ofAuto());
 
         try (Arena arena = Arena.ofConfined()) {
 
-            // 1. Look up the C functions we need (registered below at step 5)
-            //    We do this first so the arena that owns the symbol lookup stays open.
+            // TODO 1: Get a MethodHandle pointing to the Java method that C will call back into.
+            // Hint: MethodHandles.lookup().findStatic(class, methodName, MethodType.methodType(returnType, paramTypes...))
+            MethodHandle javaAlarmHandle = null;
 
-            // 2. Create a MethodHandle pointing to our Java method
-            MethodHandle javaAlarmHandle = MethodHandles.lookup().findStatic(
-                    Assignment09_Upcall.class,
-                    "onMotionDetected",
-                    java.lang.invoke.MethodType.methodType(void.class, int.class, float.class)
-            );
+            // TODO 2: Describe the upcall's signature as a FunctionDescriptor.
+            // The Java method C will call is: void onMotionDetected(int sectorId, float velocity)
+            FunctionDescriptor alarmDescriptor = null;
 
-            // 3. Define the C-side signature of the upcall
-            FunctionDescriptor alarmDescriptor = FunctionDescriptor.ofVoid(
-                    ValueLayout.JAVA_INT,
-                    ValueLayout.JAVA_FLOAT
-            );
+            // TODO 3: Convert the Java MethodHandle into a C function pointer.
+            // This is the core of an upcall, linker.upcallStub() wraps Java code in a native callable.
+            // The arena controls the lifetime of the stub.
+            // Hint: linker.upcallStub(methodHandle, descriptor, arena)
+            MemorySegment upcallStub = null;
 
-            // 4. THE MAGIC: Convert the Java MethodHandle into a C Function Pointer (MemorySegment)
-            MemorySegment upcallStub = linker.upcallStub(javaAlarmHandle, alarmDescriptor, arena);
+            // TODO 4: Create a downcall handle for "register_motion_tracker" and _invoke_ it,
+            // passing the upcall stub as the function pointer argument.
+            // C signature: void register_motion_tracker(void (*callback)(int, float))
+            // The param means it just wants a pointer to "method".
 
-            // 5. Find the C functions
-            MethodHandle registerTracker = linker.downcallHandle(
-                    shipSystems.find("register_motion_tracker").orElseThrow(),
-                    FunctionDescriptor.ofVoid(ValueLayout.ADDRESS) // Accepts our function pointer
-            );
 
+            System.out.println("MOTHER: Motion tracker online. Activating sensor sweep...");
+            System.out.println("MOTHER: Do not move.\n");
+
+            // Given
             MethodHandle simulateSweep = linker.downcallHandle(
                     shipSystems.find("simulate_sensor_sweep").orElseThrow(),
                     FunctionDescriptor.ofVoid()
             );
-
-            // 6. Execute!
-            // Pass the Java function to C
-            registerTracker.invokeExact(upcallStub);
-
-            System.out.println("MOTHER: Motion tracker online. Activating sensor sweep...");
-            System.out.println("MOTHER: Do not move.\n");
 
             // Tell C to run the simulation, which will fire the upcalls back to Java
             simulateSweep.invokeExact();
@@ -58,7 +50,7 @@ public class Assignment09_Upcall extends MainframeTerminal {
     }
 
 
-    // Define the Java method that C will call.
+    // The Java method that C will call.
     public static void onMotionDetected(int sectorId, float velocity) {
         var text = "[MOTION ALARM] Movement detected in Sector " + sectorId + "! ";
         if (velocity > 10.0f) {
