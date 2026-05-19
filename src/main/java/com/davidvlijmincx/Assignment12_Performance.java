@@ -17,11 +17,20 @@ public class Assignment12_Performance extends MainframeTerminal {
 
     }
 
+    // TODO 1: Declare static final fields for the Linker, MethodHandle, SequenceLayout, and VarHandle
+    // so they are initialised once and reused on every call.
+    // (Look at processPing, those four objects are recreated each time. Move them here.)
+
+
     public static int improvedProcessPing(int x, int y) throws Throwable {
-        // TODO: Fix the three performance mistakes from processPing():
-        // MISTAKE 1: Linker and MethodHandle are recreated on every call   → hoist to static fields
-        // MISTAKE 2: SequenceLayout and VarHandle are recreated every call  → hoist to static fields
-        // MISTAKE 3: An Arena is opened per call for a tiny 8-byte buffer   → use MemorySegment.ofArray() instead
+        // TODO 2: Replace the per-call arena allocation with MemorySegment.ofArray().
+        // This wraps a Java int[] as a MemorySegment on the heap so you have no arena and no native allocation.
+        // Hint: MemorySegment.ofArray(new int[]{x, y})
+        MemorySegment array = null;
+
+        // TODO 3: Write x and y into the array using the static VarHandle, then invoke the static
+        // MethodHandle and return the int result.
+        // (The call itself is identical to processPing. only where the objects come from changes.)
         throw new UnsupportedOperationException("Implement the optimised version here.");
     }
 

@@ -24,15 +24,18 @@ public class Assignment12_PerformanceTest {
         new Runner(opt).run();
     }
 
+    int x = 1;
+    int y = 1;
+
     @Benchmark()
-    public void improvedProcessPing(Blackhole blackhole) throws Throwable {
-        var result = Assignment12_Performance.improvedProcessPing(1,1);
+    public void improvedProcessPing(Blackhole blackhole, Assignment12_PerformanceTest plan) throws Throwable {
+        var result = Assignment12_Performance.improvedProcessPing(plan.x,plan.y);
         blackhole.consume(result);
     }
 
     @Benchmark()
-    public void poorImplemention(Blackhole blackhole){
-        var result = Assignment12_Performance.processPing(1,1);
+    public void poorImplemention(Blackhole blackhole, Assignment12_PerformanceTest plan){
+        var result = Assignment12_Performance.processPing(plan.x,plan.y);
         blackhole.consume(result);
     }
 
