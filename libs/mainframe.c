@@ -4,12 +4,6 @@
 #include <errno.h>
 #include <string.h>
 
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
-
 
 void print_with_prefix(const char *str) {
     setbuf(stdout, NULL);
