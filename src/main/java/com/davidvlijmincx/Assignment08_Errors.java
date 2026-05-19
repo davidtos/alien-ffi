@@ -8,41 +8,37 @@ public class Assignment08_Errors extends MainframeTerminal {
 
     public static void main(String[] args) throws Throwable {
 
+        // GIVEN
         Linker linker = Linker.nativeLinker();
-        SymbolLookup lookup = SymbolLookup.libraryLookup( getLibPath(), Arena.ofAuto());
+        SymbolLookup lookup = SymbolLookup.libraryLookup(getLibPath(), Arena.ofAuto());
 
+        // TODO 1: Create a Linker.Option that captures errno after the call.
+        // Hint: Linker.Option.captureCallState("errno")
 
-        // 1. THE UPGRADE: Tell the Linker we want to capture the "errno" state
-        Linker.Option captureErrno = Linker.Option.captureCallState("errno");
+        // TODO 2: Create the downcall handle for "transmit_distress_beacon", passing the capture option as a third argument.
+        // C signature: int transmit_distress_beacon(int frequency_band)
+        // Important: the capture option is the third argument when making a downcall handle.
+        MethodHandle sendBeacon = null;
 
-        // 2. Create the downcall. We pass our capture option at the very end.
-        // NOTE: This magically adds a MemorySegment as the FIRST argument to our MethodHandle!
-        MethodHandle sendBeacon = linker.downcallHandle(
-                lookup.find("transmit_distress_beacon").orElseThrow(),
-                FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT),
-                captureErrno
-        );
+        // TODO 3: Get the built-in layout that FFM uses to store the captured state.
+        // Hint: Linker.Option.captureStateLayout()
+        StructLayout stateLayout = null;
 
-        // 3. FFM provides a built-in "Blueprint" (StructLayout) for the captured state
-        StructLayout stateLayout = Linker.Option.captureStateLayout();
-
-        // 4. Calibrate the "Laser" to target the "errno" field in the state blueprint
+        // GIVEN — VarHandle to read errno out of the captured state
         VarHandle errnoHandle = stateLayout.varHandle(MemoryLayout.PathElement.groupElement("errno"));
 
         try (Arena arena = Arena.ofConfined()) {
 
-            // 5. Allocate native memory to hold the captured state
+            // GIVEN — allocate memory to hold the captured errno state
             MemorySegment capturedState = arena.allocate(stateLayout);
 
-            // Let the attendees experiment with frequency bands 1, 2, and 3
-            int frequencyBand = 2;
+            int frequencyBand = 2; // try 1, 2, and 3 to see different errors
 
             System.out.println("[Java] Attempting to broadcast distress signal...");
 
-            // 6. EXECUTE. We MUST pass the capturedState memory segment as the first argument!
-            int result = (int) sendBeacon.invokeExact(capturedState, frequencyBand);
+            // TODO 4: Invoke the handle capturedState must be the first argument, then frequencyBand.
+            int result = 0;
 
-            // 7. Error Handling Logic
             if (result == -1) {
                 System.out.println(">>> TRANSMISSION FAILED! <<<");
 
