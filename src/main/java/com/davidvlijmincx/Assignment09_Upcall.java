@@ -30,8 +30,8 @@ public class Assignment09_Upcall extends MainframeTerminal {
             // TODO 4: Create a downcall handle for "register_motion_tracker" and _invoke_ it,
             // passing the upcall stub as the function pointer argument.
             // C signature: void register_motion_tracker(void (*callback)(int, float))
-            // The param means it just wants a pointer to "method".
-
+            // Pass upcallStub as the function pointer argument
+            // C expects a void(*)(int, float).
 
             System.out.println("MOTHER: Motion tracker online. Activating sensor sweep...");
             System.out.println("MOTHER: Do not move.\n");

@@ -36,7 +36,7 @@ public class Assignment05_Arrays extends MainframeTerminal {
                 int sectorNum = 0;
 
                 // TODO 5: Read the string pointer out of reportsPtr at index i, reinterpret it, then get the String.
-                MemorySegment stringAddress = null; // Get the String (don't forget to give the segment the correct size)
+                MemorySegment stringAddress = null; // Get the String (remember to give the segment the correct size)
                 String report = null; // read the string value from the String address
 
                 System.out.println("Sector " + sectorNum + ": " + report);
