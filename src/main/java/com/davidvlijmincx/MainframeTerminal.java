@@ -4,6 +4,7 @@ import java.lang.foreign.Arena;
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ abstract class MainframeTerminal {
         String libName;
 
         if (os.contains("win")) {
-            libDir = "win-x86_64";
+            libDir = arch.equals("aarch64") ? "windows-aarch64" : "windows-x86_64";
             libName = "mainframe.dll";
         } else if (os.contains("mac")) {
             libDir = arch.equals("aarch64") ? "mac-aarch64" : "mac-x86_64";
@@ -30,7 +31,7 @@ abstract class MainframeTerminal {
             throw new UnsupportedOperationException("Unknown OS/Arch: " + os + " / " + arch);
         }
 
-        return "./libs/" + libDir + "/" + libName;
+        return Path.of("libs", libDir, libName).toAbsolutePath().toString();
     }
 
 

@@ -6,7 +6,7 @@ on:
       - 'libs/mainframe.c'
 
 jobs:
-  build:
+  build-unix:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,8 +25,6 @@ jobs:
           mkdir -p libs/mac-x86_64
           mkdir -p libs/linux-x86_64
           mkdir -p libs/linux-aarch64
-          mkdir -p libs/windows-x86_64
-          mkdir -p libs/windows-aarch64
 
       - name: Build mac-aarch64
         run: zig cc -target aarch64-macos -shared -o libs/mac-aarch64/libmainframe.dylib libs/mainframe.c
@@ -40,11 +38,57 @@ jobs:
       - name: Build linux-aarch64
         run: zig cc -target aarch64-linux-gnu -shared -fPIC -o libs/linux-aarch64/libmainframe.so libs/mainframe.c
 
-      - name: Build windows-x86_64
-        run: zig cc -target x86_64-windows-gnu -shared -o libs/windows-x86_64/mainframe.dll libs/mainframe.c -lkernel32
+      - name: Upload unix libs
+        uses: actions/upload-artifact@v4
+        with:
+          name: unix-libs
+          path: libs/
 
-      - name: Build windows-aarch64
-        run: zig cc -target aarch64-windows-gnu -shared -o libs/windows-aarch64/mainframe.dll libs/mainframe.c -lkernel32
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Create output directories
+        run: New-Item -ItemType Directory -Force -Path libs/windows-x86_64
+
+      - name: Build windows-x86_64
+        run: cl /LD /Fe:libs/windows-x86_64/mainframe.dll libs/mainframe.c /link /IMPLIB:libs/windows-x86_64/mainframe.lib
+
+      - name: Upload windows libs
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-libs
+          path: libs/
+
+  commit:
+    needs: [build-unix, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download unix libs
+        uses: actions/download-artifact@v4
+        with:
+          name: unix-libs
+          path: libs/
+
+      - name: Download windows libs
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-libs
+          path: libs/
 
       - name: Commit and push libraries
         run: |
