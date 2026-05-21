@@ -1,0 +1,17 @@
+EXPORTS
+    print_with_prefix
+    connect_to_mainframe
+    get_current_stardate
+    get_threat_assessment
+    authenticate_biometrics
+    run_sector_scan
+    execute_deep_scan
+    scan_sector
+    register_motion_tracker
+    simulate_sensor_sweep
+    transmit_distress_beacon
+    get_core_dump
+    decrypt_dump
+    analyze_sensor_sweep
+    analyze_sensor_big_sweep
+    free_sensor_sweep

@@ -61,7 +61,7 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path libs/windows-x86_64
 
       - name: Build windows-x86_64
-        run: cl /LD /Fe:libs/windows-x86_64/mainframe.dll libs/mainframe.c /link /IMPLIB:libs/windows-x86_64/mainframe.lib
+        run: cl /LD /Fe:libs/windows-x86_64/mainframe.dll libs/mainframe.c /link /DEF:libs/mainframe.def /IMPLIB:libs/windows-x86_64/mainframe.lib
 
       - name: Upload windows libs
         uses: actions/upload-artifact@v4
