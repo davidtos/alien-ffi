@@ -3,6 +3,7 @@ package com.davidvlijmincx;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
 public class Assignment09_Upcall extends MainframeTerminal {
 
@@ -31,7 +32,7 @@ public class Assignment09_Upcall extends MainframeTerminal {
             // passing the upcall stub as the function pointer argument.
             // C signature: void register_motion_tracker(void (*callback)(int, float))
             // Pass upcallStub as the function pointer argument
-            // C expects a void(*)(int, float).
+
 
             System.out.println("MOTHER: Motion tracker online. Activating sensor sweep...");
             System.out.println("MOTHER: Do not move.\n");

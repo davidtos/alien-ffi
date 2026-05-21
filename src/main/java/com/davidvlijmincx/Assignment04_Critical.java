@@ -17,7 +17,8 @@ public class Assignment04_Critical extends MainframeTerminal {
             // Linker.Option.critical(true) tells the JVM this call is short-lived and
             // time-sensitive. The JVM skips inserting a GC safepoint for the duration,
             // which avoids pinning the carrier thread and reduces latency.
-            // Only use it for calls guaranteed to return quickly — never for blocking I/O.
+            // Only use it for calls guaranteed to return quickly never for blocking I/O.
+            // You would use this for cases were the call is very fast and memory allocation would hold you back.
 
             System.out.println("MOTHER: Initiating biometric authentication. Please stand by...");
 

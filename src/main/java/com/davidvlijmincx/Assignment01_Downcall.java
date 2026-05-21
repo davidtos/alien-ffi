@@ -10,7 +10,7 @@ public class Assignment01_Downcall extends MainframeTerminal {
         // Hint: Linker.nativeLinker()
 
         // TODO 2: Load the ship's library so you can look up functions in it.
-        // Hint: SymbolLookup.libraryLookup(path, arena) — you'll also need an Arena for library's lifetime.
+        // Hint: SymbolLookup.libraryLookup(path, arena) you'll also need an Arena for library's lifetime.
         String libPath = getLibPath();
         SymbolLookup shipSystems = null;
 
@@ -20,7 +20,7 @@ public class Assignment01_Downcall extends MainframeTerminal {
 
         // TODO 4: Describe the C function's signature so the linker knows how to call it.
         // C signature: int connect_to_mainframe(int code)
-        // Hint: FunctionDescriptor.of(returnType, paramTypes...) — map C int to ValueLayout.JAVA_INT
+        // Hint: FunctionDescriptor.of(returnType, paramTypes...) map C int to ValueLayout.JAVA_INT
         FunctionDescriptor descriptor = null;
 
         // TODO 5: Ask the linker to create a MethodHandle from the symbol and descriptor.
@@ -29,7 +29,7 @@ public class Assignment01_Downcall extends MainframeTerminal {
         System.out.println("MOTHER: Channel open. Transmitting crew access code...");
 
         // TODO 6: Invoke the handle with access code 42 and capture the int result.
-        // Hint: invokeExact must match the descriptor signature exactly — cast the return value.
+        // Hint: invokeExact must match the descriptor signature exactly cast the return value.
         int result = 0; // replace with your invocation
 
         if (result == 200) {

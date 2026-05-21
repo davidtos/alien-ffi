@@ -9,7 +9,7 @@ public class Assignment06_Strucs extends MainframeTerminal {
     public static void main(String[] args) throws Throwable {
         Linker linker = Linker.nativeLinker();
 
-        // TODO 1: Define the struct layout — this is the Java mirror of the C struct.
+        // TODO 1: Define the struct layout this is the Java mirror of the C struct.
         // C struct:
         //
         //   typedef struct {

@@ -28,7 +28,7 @@ public class Assignment07_StructPadding extends MainframeTerminal {
         // Start by uncommenting the broken layout to see the error, then fix it.
         // Hint: MemoryLayout.paddingLayout(N) inserts N bytes of padding.
         //
-        // BROKEN — uncomment to see the IllegalArgumentException:
+        // BROKEN uncomment to see the IllegalArgumentException:
 //        StructLayout sensorLayout = MemoryLayout.structLayout(
 //            ValueLayout.JAVA_BYTE.withName("classification"),
 //            ValueLayout.JAVA_INT.withName("sector_id"),
@@ -72,7 +72,7 @@ public class Assignment07_StructPadding extends MainframeTerminal {
                 System.out.println("MOTHER: Subject is currently dormant. Do not approach.");
                 System.out.println("MOTHER: Proximity may trigger a hostile response. Maintain safe distance.");
             } else {
-                System.out.println("MOTHER: !! WARNING — SUBJECT IS ACTIVE !!");
+                System.out.println("MOTHER: !! WARNING SUBJECT IS ACTIVE !!");
                 System.out.println("MOTHER: Recommend immediate withdrawal from sector.");
             }
         }

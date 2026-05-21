@@ -24,12 +24,12 @@ public class Assignment08_Errors extends MainframeTerminal {
         // Hint: Linker.Option.captureStateLayout()
         StructLayout stateLayout = null;
 
-        // GIVEN — VarHandle to read errno out of the captured state
+        // GIVEN VarHandle to read errno out of the captured state
         VarHandle errnoHandle = stateLayout.varHandle(MemoryLayout.PathElement.groupElement("errno"));
 
         try (Arena arena = Arena.ofConfined()) {
 
-            // GIVEN — allocate memory to hold the captured errno state
+            // GIVEN allocate memory to hold the captured errno state
             MemorySegment capturedState = arena.allocate(stateLayout);
 
             int frequencyBand = 2; // try 1, 2, and 3 to see different errors
@@ -53,7 +53,7 @@ public class Assignment08_Errors extends MainframeTerminal {
                     System.out.println("Reason: Hardline severed. The alien cut the power to the transmitter!");
                 }  else if (errCode == 966) {
                     System.out.println("Mainframe Error 966: SPECIAL ORDERS.");
-                    System.out.println("Do not abandon the ship. Bring back all Xenomorphic Materials — Priority One.");
+                    System.out.println("Do not abandon the ship. Bring back all Xenomorphic Materials, Priority One.");
                 } else {
                     System.out.println("Unknown Critical Failure: " + errCode);
                 }

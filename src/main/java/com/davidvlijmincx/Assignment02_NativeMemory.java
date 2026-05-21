@@ -20,7 +20,7 @@ public class Assignment02_NativeMemory extends MainframeTerminal {
         System.out.println("MOTHER: Retrieving mission stardate from mainframe...");
 
         // TODO 5: Allocate native memory for the double the C function will write into.
-        // Hint: arena.allocate(...) — pass it a ValueLayout that matches the type
+        // Hint: arena.allocate(...) pass it a ValueLayout that matches the type of the pointer
 
         // TODO 6: Invoke the handle, passing your allocated segment as the output pointer.
 

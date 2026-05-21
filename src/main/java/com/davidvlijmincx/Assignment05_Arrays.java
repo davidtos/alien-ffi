@@ -11,13 +11,13 @@ public class Assignment05_Arrays extends MainframeTerminal {
             int numberOfSectors = 3;
 
             // TODO 1: Allocate a native array of 3 ints to hold the sector IDs.
-            // Hint: arena.allocate(layout, count) — you've used allocate(layout) before, this variant allocates multiple elements
+            // Hint: arena.allocate(layout, count) you've used allocate(layout) before, this variant allocates multiple elements
             MemorySegment sectorIds = null;
 
             // TODO 2: Write sector IDs 5, 6, 7 into the array.
             // Hint: MemorySegment has a setAtIndex(layout, index, value) method
 
-            // TODO 3: Allocate a native array of 3 pointers — the C function will write a string pointer into each slot.
+            // TODO 3: Allocate a native array of 3 pointers the C function will write a string pointer into each slot.
             // Hint: use ValueLayout.ADDRESS as the layout
             MemorySegment reportsPtr = null;
 

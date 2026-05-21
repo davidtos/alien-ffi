@@ -12,7 +12,7 @@ public class Assignment10_Slicing extends MainframeTerminal {
 
         try (Arena arena = Arena.ofConfined()) {
 
-            // GIVEN — downcall handles (same pattern as before)
+            // GIVEN downcall handles (same pattern as before)
             MethodHandle getCoreDump = linker.downcallHandle(
                     lookup.find("get_core_dump").get(),
                     FunctionDescriptor.of(ValueLayout.ADDRESS)
@@ -31,7 +31,7 @@ public class Assignment10_Slicing extends MainframeTerminal {
             long dumpSize = 10240;
             MemorySegment fullCoreDump = null;
 
-            // TODO 2: Slice the segment — extract 256 bytes starting at offset 4096.
+            // TODO 2: Slice the segment extract 256 bytes starting at offset 4096.
             // This is the new concept: asSlice() gives you a *view* into the segment, no data is copied.
             // The slice is a valid MemorySegment and can be passed directly to native code.
             // Hint: mmorySegment.asSlice(offset, length)

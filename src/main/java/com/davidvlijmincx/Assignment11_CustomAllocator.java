@@ -24,7 +24,7 @@ public class Assignment11_CustomAllocator extends MainframeTerminal {
             MemorySegment commandStr = safeAllocator.allocateFrom("SEAL DOORS");
             MemorySegment overrideCode = safeAllocator.allocateFrom(ValueLayout.JAVA_INT, 937);
 
-            System.out.println("\nMOTHER: Command issued — " + commandStr.getString(0) + ".");
+            System.out.println("\nMOTHER: Command issued  " + commandStr.getString(0) + ".");
             System.out.println("MOTHER: Override code " + overrideCode.get(ValueLayout.JAVA_INT, 0) + " is active.");
             System.out.println("MOTHER: All internal bulkhead doors are sealed. Safe Zone is holding.");
         }
@@ -33,7 +33,7 @@ public class Assignment11_CustomAllocator extends MainframeTerminal {
 
 class SafeZoneAllocator implements SegmentAllocator {
 
-    // GIVEN — backing segment and bump pointer
+    // GIVEN  backing segment and bump pointer
     private final MemorySegment safeZone;
     private long currentOffset = 0;
 
@@ -48,7 +48,7 @@ class SafeZoneAllocator implements SegmentAllocator {
     public MemorySegment allocate(long byteSize, long byteAlignment) {
 
         // TODO 1: Advance currentOffset to the next multiple of byteAlignment.
-        // Native types (int, double, structs) must start at an aligned address —
+        // Native types (int, double, structs) must start at an aligned address 
         // if currentOffset isn't already aligned, insert padding bytes.
         // Hint: remainder = currentOffset % byteAlignment
         //       padding   = (remainder == 0) ? 0 : (byteAlignment - remainder)
