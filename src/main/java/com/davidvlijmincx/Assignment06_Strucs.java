@@ -19,19 +19,19 @@ public class Assignment06_Strucs extends MainframeTerminal {
         //    int produces_acid;
         //} BiomassSignature;
 
-        //
-        // Hint: MemoryLayout.structLayout(...) takes ValueLayouts as arguments.
-        // Give each field a name using .withName("field_name") you'll need those names for VarHandles.
-        // Give the whole GroupLayout a name too: .withName("BiomassSignature")
-        GroupLayout biomassLayout = null;
+        GroupLayout biomassLayout = MemoryLayout.structLayout(
+                ValueLayout.JAVA_INT.withName("entity_id"),
+                ValueLayout.JAVA_FLOAT.withName("threat_level"),
+                ValueLayout.JAVA_LONG.withName("mass_kg"),
+                ValueLayout.JAVA_INT.withName("produces_acid")
+        ).withName("BiomassSignature");
 
         // TODO 2: Create a VarHandle for each field so you can read values out of the struct later.
-        // A VarHandle is like a typed pointer to a specific field inside a MemorySegment.
-        // Hint: biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("field_name"))
-        VarHandle entityIdHandle = null;
-        VarHandle threatLevelHandle = null;
-        VarHandle massHandle = null;
-        VarHandle acidHandle = null;
+        VarHandle entityIdHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("entity_id"));
+        VarHandle threatLevelHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("threat_level"));
+        VarHandle massHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("mass_kg"));
+        VarHandle acidHandle = biomassLayout.varHandle(MemoryLayout.PathElement.groupElement("produces_acid"));
+
 
         // GIVEN
         MethodHandle executeDeepScan = linker.downcallHandle(
@@ -44,20 +44,17 @@ public class Assignment06_Strucs extends MainframeTerminal {
         try (Arena arena = Arena.ofConfined()) {
 
             // TODO 3: Allocate a native memory segment sized to hold one BiomassSignature struct.
-            // Hint: arena.allocate(layout) pass it the GroupLayout you defined above
-            MemorySegment scanOutput = null;
+            MemorySegment scanOutput = arena.allocate(biomassLayout);
 
             System.out.println("MOTHER: Initiating deep biomass scan of Sector " + sectorId + ". Analysing biological signatures...");
 
             executeDeepScan.invokeExact(sectorId, scanOutput);
 
             // TODO 4: Read each field from the struct using your VarHandles.
-            // Hint: varHandle.get(segment, 0L) 0 is the byte offset from the start of the segment.
-            // Don't forget to cast the result to the right Java type.
-            int entityId = 0;
-            float threatLevel = 0;
-            long mass = 0;
-            int producesAcid = 0;
+            int entityId = (int) entityIdHandle.get(scanOutput, 0L);
+            float threatLevel = (float) threatLevelHandle.get(scanOutput, 0L);
+            long mass = (long) massHandle.get(scanOutput, 0L);
+            int producesAcid = (int) acidHandle.get(scanOutput, 0L);
 
             System.out.println("\n=== DEEP SCAN TELEMETRY ===");
             System.out.println("Subject ID: " + entityId);

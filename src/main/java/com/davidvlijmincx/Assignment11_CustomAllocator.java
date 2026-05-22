@@ -48,19 +48,20 @@ class SafeZoneAllocator implements SegmentAllocator {
     public MemorySegment allocate(long byteSize, long byteAlignment) {
 
         // TODO 1: Advance currentOffset to the next multiple of byteAlignment.
-        // Native types (int, double, structs) must start at an aligned address 
-        // if currentOffset isn't already aligned, insert padding bytes.
-        // Hint: remainder = currentOffset % byteAlignment
-        //       padding   = (remainder == 0) ? 0 : (byteAlignment - remainder)
+        long remainder = currentOffset % byteAlignment;
+        long padding = (remainder == 0) ? 0 : (byteAlignment - remainder);
+        currentOffset += padding;
 
         // TODO 2: Check capacity, throw OutOfMemoryError if the allocation
-        // would exceed safeZone.byteSize().
+        if (currentOffset + byteSize > safeZone.byteSize()) {
+            throw new OutOfMemoryError("CRITICAL: Safe zone memory depleted. Acid breach imminent.");
+        }
 
         // TODO 3: Slice byteSize bytes from safeZone at currentOffset.
-        // Hint: safeZone.asSlice(currentOffset, byteSize) like you used asSlice in Assignment 10.
-        MemorySegment allocatedSlice = null;
+        MemorySegment allocatedSlice = safeZone.asSlice(currentOffset, byteSize);
 
         // TODO 4: Advance currentOffset by byteSize so the next allocation starts after this one.
+        currentOffset += byteSize;
 
         System.out.println("MU-TH-UR: " + byteSize + " bytes allocated in Safe Zone at offset " + (currentOffset - byteSize));
 

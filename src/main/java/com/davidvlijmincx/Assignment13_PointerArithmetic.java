@@ -43,9 +43,8 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
         }
 
         // TODO 1: Reinterpret the raw pointer array to its true byte size.
-        // C returned an AlienSignature** pingCount pointers packed in a row.
-        // Hint: each slot is ValueLayout.ADDRESS.byteSize() bytes wide.
-        MemorySegment sizedPointerArray = null;
+        long arrayByteSize = (long) pingCount * ValueLayout.ADDRESS.byteSize();
+        MemorySegment sizedPointerArray = pointerArraySegment.reinterpret(arrayByteSize);
 
         // GIVEN VarHandles to read struct fields
         VarHandle idHandle     = ALIEN_SIGNATURE_LAYOUT.varHandle(MemoryLayout.PathElement.groupElement("id"));
@@ -57,25 +56,20 @@ public class Assignment13_PointerArithmetic extends MainframeTerminal {
         for (long i = 0; i < pingCount; i++) {
 
             // TODO 2: Read the i-th pointer from the array.
-            // Hint: sizedPointerArray.getAtIndex(ValueLayout.ADDRESS, i)
-            MemorySegment structPointer = null;
+            MemorySegment structPointer = sizedPointerArray.getAtIndex(ValueLayout.ADDRESS, i);
 
             // TODO 3 Standard approach: reinterpret structPointer as a bounded segment
-            // the size of one struct, then read each field with its VarHandle.
-            // Hint: structPointer.reinterpret(ALIEN_SIGNATURE_LAYOUT.byteSize())
-            int id        = 0;
-            int threat    = 0;
-            float dir     = 0;
-            float speed   = 0;
+            MemorySegment structSegment = structPointer.reinterpret(ALIEN_SIGNATURE_LAYOUT.byteSize());
+           int id = (int) idHandle.get(structSegment, 0L);
+           int threat = (int) threatHandle.get(structSegment, 0L);
+           float dir = (float) dirHandle.get(structSegment, 0L);
+           float speed = (float) speedHandle.get(structSegment, 0L);
 
             // TODO 4  Zero-GC approach: instead of wrapping the pointer in a new MemorySegment,
-            // pass its raw address directly to ZeroGcAlienSignature (see the class below).
-            // The raw address is used as a byte offset into one global segment, no allocation per loop iteration.
-            // Hint: structPointer.address() gives you the long address.
-            int idFast     = 0;
-            int threatFast = 0;
-            float dirFast  = 0;
-            float speedFast = 0;
+            int idFast     = ZeroGcAlienSignature.getId(structPointer.address());
+            int threatFast = ZeroGcAlienSignature.getThreat(structPointer.address());
+            float dirFast  = ZeroGcAlienSignature.getDir(structPointer.address());
+            float speedFast = ZeroGcAlienSignature.getSpeed(structPointer.address());
 
             System.out.printf("Standard  ID: %d | Threat: %d | Dir: %.1f | Speed: %.1f%n", id, threat, dir, speed);
             System.out.printf("Zero-GC   ID: %d | Threat: %d | Dir: %.1f | Speed: %.1f%n%n", idFast, threatFast, dirFast, speedFast);

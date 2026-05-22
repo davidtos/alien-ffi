@@ -13,16 +13,17 @@ public class Assignment08_Errors extends MainframeTerminal {
         SymbolLookup lookup = SymbolLookup.libraryLookup(getLibPath(), Arena.ofAuto());
 
         // TODO 1: Create a Linker.Option that captures errno after the call.
-        // Hint: Linker.Option.captureCallState("errno")
+        Linker.Option captureErrno = Linker.Option.captureCallState("errno");
 
         // TODO 2: Create the downcall handle for "transmit_distress_beacon", passing the capture option as a third argument.
-        // C signature: int transmit_distress_beacon(int frequency_band)
-        // Important: the capture option is the third argument when making a downcall handle.
-        MethodHandle sendBeacon = null;
+        MethodHandle sendBeacon = linker.downcallHandle(
+                lookup.find("transmit_distress_beacon").orElseThrow(),
+                FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT),
+                captureErrno
+        );
 
         // TODO 3: Get the built-in layout that FFM uses to store the captured state.
-        // Hint: Linker.Option.captureStateLayout()
-        StructLayout stateLayout = null;
+        StructLayout stateLayout = Linker.Option.captureStateLayout();
 
         // GIVEN VarHandle to read errno out of the captured state
         VarHandle errnoHandle = stateLayout.varHandle(MemoryLayout.PathElement.groupElement("errno"));
@@ -37,7 +38,7 @@ public class Assignment08_Errors extends MainframeTerminal {
             System.out.println("[Java] Attempting to broadcast distress signal...");
 
             // TODO 4: Invoke the handle capturedState must be the first argument, then frequencyBand.
-            int result = 0;
+            int result = (int) sendBeacon.invokeExact(capturedState, frequencyBand);
 
             if (result == -1) {
                 System.out.println(">>> TRANSMISSION FAILED! <<<");

@@ -12,31 +12,14 @@ public class Assignment07_StructPadding extends MainframeTerminal {
         SymbolLookup lookup = SymbolLookup.libraryLookup(getLibPath(), Arena.ofAuto());
 
         // TODO: Fix the struct layout below by adding padding where the C compiler requires it.
-        //
-        // The C struct is:
-        //   typedef struct {
-        //       char   classification;  // offset 0,  1 byte
-        //       int    sector_id;       // offset 4,  4 bytes  ← compiler inserted 3 bytes of padding here
-        //       double signal_strength; // offset 8,  8 bytes
-        //       char   active;          // offset 16, 1 byte
-        //   } SensorReading;            // sizeof = 24         ← 7 bytes of trailing padding
-        //
-        // The C compiler silently inserts padding so every field starts at a multiple of its own
-        // size (int → multiple of 4, double → multiple of 8). FFM validates this and will throw
-        // an IllegalArgumentException if the offsets don't match.
-        //
-        // Start by uncommenting the broken layout to see the error, then fix it.
-        // Hint: MemoryLayout.paddingLayout(N) inserts N bytes of padding.
-        //
-        // BROKEN uncomment to see the IllegalArgumentException:
-//        StructLayout sensorLayout = MemoryLayout.structLayout(
-//            ValueLayout.JAVA_BYTE.withName("classification"),
-//            ValueLayout.JAVA_INT.withName("sector_id"),
-//            ValueLayout.JAVA_DOUBLE.withName("signal_strength"),
-//            ValueLayout.JAVA_BYTE.withName("active")
-//        ).withName("SensorReading");
-
-        StructLayout sensorLayout = null; // replace with the corrected layout
+        StructLayout sensorLayout = MemoryLayout.structLayout(
+                ValueLayout.JAVA_BYTE.withName("classification"),
+                MemoryLayout.paddingLayout(3),
+                ValueLayout.JAVA_INT.withName("sector_id"),
+                ValueLayout.JAVA_DOUBLE.withName("signal_strength"),
+                ValueLayout.JAVA_BYTE.withName("active"),
+                MemoryLayout.paddingLayout(7)
+        ).withName("SensorReading");
 
         System.out.println("MOTHER: SensorReading layout size = " + sensorLayout.byteSize() + " bytes (expected 24)");
 
